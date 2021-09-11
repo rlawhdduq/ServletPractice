@@ -12,6 +12,11 @@ import javax.servlet.http.HttpServlet;
 public class MemberVO extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        private String id;
+       private String pwd;
+       private String name;
+       private String email;
+       private Date joinDate;
+       
        public String getId() {
 		return id;
 	}
@@ -44,10 +49,7 @@ public class MemberVO extends HttpServlet {
 	public void setJoinDate(Date joinDate) {
 		this.joinDate = joinDate;
 	}
-	private String pwd;
-       private String name;
-       private String email;
-       private Date joinDate;
+	
     /**
      * @see HttpServlet#HttpServlet()
      */

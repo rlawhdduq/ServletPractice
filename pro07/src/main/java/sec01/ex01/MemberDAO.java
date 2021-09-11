@@ -1,36 +1,36 @@
 package sec01.ex01;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.*;
+import java.sql.Connection;
 import java.sql.Date;
-import java.util.*;
-
-import javax.servlet.Servlet;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.SQLException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class MemberDAO
  */
 @WebServlet("/MemberDAO") 
 public class MemberDAO extends HttpServlet {
-	private Statement stmt;
+
+	private static final String driver = "oracle.jdbc.driver.OracleDriver";
+	private static final String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+	private static final String user = "c##scott";
+	private static final String pwd = "tiger";
+	private Statement stmt = null;
 	private Connection con;
-	private String url = "jdbc:oracle//192.168.123.100/Servlet 실습";
-	private String user = "c##whdduq";
-	private String pwd = "whdduq";
 	public List<MemberVO> listMembers(){
 		List<MemberVO> list = new ArrayList<MemberVO>();
 		try {
 			connDB();
-			String query = "select * from t_member";
+			String query = "select * from t_member ";
 			System.out.println(query);
 			ResultSet rs = stmt.executeQuery(query);
+			
 			while(rs.next()) {
 				String id = rs.getString("id");
 				String pwd = rs.getString("pwd");
@@ -56,11 +56,12 @@ public class MemberDAO extends HttpServlet {
 
 	private void connDB() {
 		try {
-			
+			Class.forName(driver);
 			System.out.println("Oracle 드라이버 로딩 성공");
 			con = DriverManager.getConnection(url, user, pwd);
 			System.out.println("Connection 생성 성공");
-			stmt= con.createStatement();
+			stmt = con.createStatement();
+			stmt.executeUpdate("use serXDB");
 			System.out.println("Statement 생성 성공");
 		} catch (Exception e) {
 			e.printStackTrace();
